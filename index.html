@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Efficient Masked Attention Transformer for Few-Shot Classification and Segmentation.">
+  <meta name="keywords" content="Few-shot learning, Efficiency, Segmentation, Classification">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EMAT</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon/favicon.ico" type="image/x-icon">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 is-size-3-mobile publication-title">Efficient Masked Attention Transformer for Few-Shot Classification and Segmentation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://dustincarrion.github.io">Dustin Carrión-Ojeda</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.visinf.tu-darmstadt.de/visual_inference/people_vi/stefan_roth.en.jsp">Stefan Roth</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a href="https://schaubsi.github.io">Simone Schaub-Meyer</a><sup>1,2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>TU Darmstadt,</span>
+            <span class="author-block"><sup>2</sup>hessian.AI</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2507.23642"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0rem; padding-bottom: 0rem;">
+  <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <img id="teaser" src="./static/images/teaser.pdf" 
+            class="teaser-image"
+            alt="Qualitative comparison of small objects between CST and our EMAT."/>
+          <div class="content has-text-justified">
+            <p>
+              <b>TL;DR:</b> EMAT processes high-resolution correlation tokens, boosting few-shot classification and segmentation, especially for small objects, while using at least four times fewer parameters than existing methods. It supports <i>N</i>-way <i>K</i>-shot tasks and correctly outputs empty masks when no target is present.
+            </p>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+
+<br>
+
+<!-- Abstract. -->
+<section class="section hero is-light" style="padding-top: 1rem; padding-bottom: 1rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 is-size-4-mobile">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Few-shot classification and segmentation (FS-CS) focuses on jointly performing multi-label classification and multi-class segmentation using few annotated examples. Although the current state of the art (SOTA) achieves high accuracy in both tasks, it struggles with small objects. To overcome this, we propose the <b>E</b>fficient <b>M</b>asked <b>A</b>ttention <b>T</b>ransformer (EMAT), which improves classification and segmentation accuracy, especially for small objects. EMAT introduces three modifications: a novel memory-efficient masked attention mechanism, a learnable downscaling strategy, and parameter-efficiency enhancements. EMAT outperforms all FS-CS methods on the PASCAL-5<sup>i</sup> and COCO-20<sup>i</sup> datasets, using at least four times fewer trainable parameters. Moreover, as the current FS-CS evaluation setting discards available annotations, despite their costly collection, we introduce two novel evaluation settings that consider these annotations to better reflect practical scenarios.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Abstract. -->
+
+<section class="section" style="padding-top: 1rem; padding-bottom: 0rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 is-size-4-mobile">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our proposed EMAT builds on the classification-segmentation transformer (CST), the previous SOTA for FS-CS. Both models share the same feature extraction process: a frozen, pre-trained ViT extracts support and query tokens, which are correlated via cosine similarity to form the correlation tokens.
+          </p>
+          <p>
+            EMAT differs from CST in its two-layer transformer (purple blocks in the figure below), which processes the correlation tokens and feeds task-specific heads for multi-label classification and multi-class segmentation. EMAT enhances this transformer with three key improvements:
+          </p>
+          <ol>
+            <li><b>Efficient masked attention:</b> A novel formulation that discards masked tokens instead of zeroing them, cutting memory use and allowing EMAT to use higher-resolution correlation tokens.</li> 
+            <li><b>Learnable downscaling:</b> A lightweight learnable strategy that combines small convolutions with pooling, eliminating the need for the large pooling kernels that would otherwise be required to handle the higher-resolution correlation tokens used by EMAT.</li>
+            <li><b>Parameter efficiency:</b> Few-shot models with too many parameters risk overfitting the small support set. Therefore, EMAT reduces the number of channels across all operations, significantly decreasing its number of trainable parameters.</li>
+          </ol>
+        </div>
+        <img src="./static/images/EMAT-pipeline.pdf" 
+            class="emat-pipeline"
+            alt="EMAT pipeline."
+            style="width:100%"/>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 is-size-4-mobile">Evaluation Settings</h2>
+        <div class="content has-text-justified">
+          <p> 
+            The <b>original</b> few-shot classification and segmentation (FS-CS) setting follows the <i>N</i>-way <i>K</i>-shot formulation: each task has a support set and one query image, and the support set contains <i>N</i> classes with <i>K</i> examples each. This setting assumes every support image has annotations for only one class. If a support image includes annotations from multiple classes, its label vector and segmentation mask are adjusted to keep just one class before the support set is created, discarding available annotations and wasting costly labeling effort. 
+          </p> 
+          <p>
+            To better utilize existing annotations and reflect real-world scenarios, we propose two new FS-CS evaluation settings:
+          </p>
+          <ol>
+            <li><b>Partially Augmented:</b> Each support image retains every annotation belonging to the <i>N</i> support classes, while annotations for non-support classes are removed. This improves utilization of available annotations without increasing task difficulty and may even boost performance by adding more examples per class.</li> 
+            <li><b>Fully Augmented:</b> Each support image keeps every annotation. Although this uses all available annotations, it increases task difficulty because the model must also classify and segment the non-support classes present in the support set.</li> 
+          </ol>
+          <p> 
+            The figure below shows how a 2-way 1-shot task changes under the three evaluation settings and how each setting affects CST<sup>*</sup> and EMAT. Note that CST<sup>*</sup> uses the same backbone as EMAT (DINOv2-S), whereas the original CST uses DINO-S. 
+          </p>
+        </div>
+        <img src="./static/images/evaluation-settings.pdf" 
+            class="evaluation-settings"
+            alt="FS-CS evaluation settings."
+            style="width:100%"/>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 is-size-4-mobile">Analysis of Small Objects</h2>
+        <div class="content has-text-justified">
+          <p> 
+            EMAT provides the largest improvement over CST<sup>*</sup> for the smallest objects (objects occupying 0-5% of the image), gradually decreasing as object size increases. The enhanced classification and segmentation accuracy of EMAT is likely due to better localization enabled by its higher-resolution correlation tokens. 
+          </p>
+        </div>
+        <img src="./static/images/analysis-small-objects.pdf" 
+          class="analysis-small-objects"
+          alt="Analysis of small objects on PASCAL-5i and COCO-20i."
+          style="width:100%"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX" style="padding-top: 2rem;">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 is-size-4-mobile" style="font-weight: 700;">BibTeX</h2>
+    <pre><code>@inproceedings{carrion2025emat,
+  author    = {Dustin Carrión-Ojeda and Stefan Roth and Simone Scahub-Meyer},
+  title     = {Efficient Masked Attention Transformer for Few-Shot Classification and Segmentation},
+  booktitle = {GCPR},
+  year      = {2025},
+}</code></pre>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0rem; padding-bottom: 4rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <h2 class="title is-3 is-size-4-mobile">Acknowledgments</h2>
+        </div>
+      <div class="content has-text-justified" style="font-size: 13px;">
+        <p>
+          This work was funded by the Hessian Ministry of Science and Research, Arts and Culture (HMWK) through the project "The Third Wave of Artificial Intelligence - 3AI". The work was further supported by the Deutsche Forschungsgemeinschaft (German Research Foundation, DFG) under Germany's Excellence Strategy (EXC 3057/1 "Reasonable Artificial Intelligence", Project No. 533677015). Stefan Roth acknowledges support by the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme (grant agreement No. 866008).
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This webpage template is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>, under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
