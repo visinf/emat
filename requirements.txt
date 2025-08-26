@@ -1,0 +1,12 @@
+yacs==0.1.8
+accelerate==0.25.0
+einops==0.7.0
+pytorch-lightning==2.2.1
+matplotlib==3.8.2
+tensorboardX==2.6.2.2
+tensorboard==2.16.0
+numpy==1.26.4
+pillow==10.2.0
+timm==0.9.12
+xformers==0.0.23
+protobuf==4.25.2
