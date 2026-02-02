@@ -9,8 +9,10 @@
 <sup>2</sup>hessian.AI  
 <h3>Accepted to GCPR 2025</h3>
 
+[![Paper](https://img.shields.io/badge/Paper-GCPR-6c757d.svg)](http://dx.doi.org/10.1007/978-3-032-12840-9_18)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b.svg)](https://arxiv.org/abs/2507.23642)
 [![Project Page](https://img.shields.io/badge/Project-Website-2ea44f.svg)](https://visinf.github.io/emat/)
+[![Poster](https://img.shields.io/badge/Poster-grey.svg)](https://visinf.github.io/emat/data/emat_poster_gcpr.pdf)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Framework](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?&logo=PyTorch&logoColor=white)](https://pytorch.org/)
@@ -252,7 +254,10 @@ If you find our work helpful, please consider citing the following paper and ⭐
 @inproceedings{carrion2025emat,
     title={Efficient Masked Attention Transformer for Few-Shot Classification and Segmentation},
     author={Dustin Carrión-Ojeda and Stefan Roth and Simone Scahub-Meyer},
-    booktitle={Proceedings of the German Conference on Pattern Recognition (GCPR)},
+    booktitle={Proceedings of the 47th German Conference on Pattern Recognition (GCPR)},
+    editor={Margret Keuper and Francesco Locatello},
+    series={LNCS},
+    volume={16125},
     year={2025},
 }
 ```
